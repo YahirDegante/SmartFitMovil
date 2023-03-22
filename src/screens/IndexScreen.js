@@ -7,10 +7,29 @@ import { Input, Button, Icon } from "react-native-elements";
 import Toast from "react-native-toast-message";
 import { useNavigation } from "@react-navigation/native";
 import * as yup from 'yup';
+import axios from 'axios';
 
 export default function IndexScreen(props) {
     const { navigation } = props;
     const [password, setPassword] = useState(false);
+    const handleLogin = async () => {
+        try {
+            const response = await axios.post('http://192.168.100.10:8090/auth/login', {
+                email: formik.values.email,
+                password: formik.values.password,
+            });
+            console.log(response.data); // respuesta del servicio de login
+            console.log("Logeado");
+            navigation.navigate('homeClient'); // redirigir a pantalla de inicio de sesión exitoso
+        } catch (error) {
+            Toast.show({
+                type: 'error',
+                text1: 'Error',
+                text2: 'Usuario o contraseña incorrectos',
+            });
+        }
+    };
+
     //valores de formik
     const formik = useFormik({
         initialValues: {
@@ -26,25 +45,11 @@ export default function IndexScreen(props) {
         validateOnChange: false,
         //registra un usuario
         onSubmit: async (formValue, { setSubmitting }) => {
-            //navegar a index y mandar una alerta de que el usuario se ha registrado correctamente
             const email = formValue.email;
             const password = formValue.password;
-            if (email == "carito@utez.edu.mx" && password == "1234") {
-                navigation.navigate("homeClient");
-            }else {
-                Toast.show({
-                    type: 'error',
-                    text1: 'Error',
-                    text2: 'Usuario o contraseña incorrectos',
-                });
-            }
-            //Provicional
-            if (email == "coach@utez.edu.mx" && password == "1234") {
-                navigation.navigate("homeCoach");
-            } 
+            handleLogin(); 
             setSubmitting(false);
         }
-
     });
 
     const showPass = () => {

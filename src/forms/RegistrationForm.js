@@ -17,7 +17,7 @@ export default function RegistrationForm() {
     const [show, setShow] = useState(false);
     const [genero, setGenero] = useState('default');
 
-    const baseUrl = '//192.168.0.9:8090/auth/nuevoUsuario';
+    const baseUrl = '//192.168.100.10:8090/auth/nuevoUsuario';
 
     const onChange = (event, selectedDate) => {
         const currentDate = selectedDate || date;
@@ -61,7 +61,7 @@ export default function RegistrationForm() {
             gender: yup.string().required("Por favor selecciona un género"),
             weight: yup.string().required("Ingresa tu peso, si no lo sabes puedes poner uno aproximado"),
             height: yup.string().required("Ingresa tu altura, si no la conoces puedes poner una aproximada"),
-            objective: yup.string().required("Menciona un objetivo, si no tienes alguno puedes escribir NO APLICA")
+            //objective: yup.string().required("Menciona un objetivo, si no tienes alguno puedes escribir NO APLICA")
         }),
         validateOnChange: false,
         //registra un usuario
@@ -88,7 +88,7 @@ export default function RegistrationForm() {
             //convertir a JSON
             const jsonData = JSON.stringify(formData);
             //enviar datos al servidor
-            fetch('http://192.168.0.9:8090/auth/nuevoUsuario', {
+            fetch('http://192.168.100.10/auth/nuevoUsuario', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -101,7 +101,6 @@ export default function RegistrationForm() {
       console.log(formData);
       setSubmitting(false);
         }
-        
 
     });
     //ocultar y mostrar contraseña
@@ -149,7 +148,6 @@ export default function RegistrationForm() {
                         buttonStyle={{ backgroundColor: 'transparent' }}
                         titleStyle={{ color: 'gray' }}
                     />
-                     
                     {show && (
                         <DateTimePicker
                             testID="dateTimePicker"
