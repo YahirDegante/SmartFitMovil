@@ -8,19 +8,31 @@ import Toast from "react-native-toast-message";
 import { useNavigation } from "@react-navigation/native";
 import * as yup from 'yup';
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function IndexScreen(props) {
     const { navigation } = props;
     const [password, setPassword] = useState(false);
     const handleLogin = async () => {
         try {
-            const response = await axios.post('http://192.168.100.10:8090/auth/login', {
+            const response = await axios.post('http://192.168.100.10/auth/login', {
                 email: formik.values.email,
                 password: formik.values.password,
             });
+            const token = response.data.token;
+            await AsyncStorage.setItem('token', token);
             console.log(response.data); // respuesta del servicio de login
             console.log("Logeado");
-            navigation.navigate('homeClient'); // redirigir a pantalla de inicio de sesión exitoso
+
+            // Obtener el rol del usuario desde los datos de respuesta
+            const userRole = response.data.role;
+
+            // Redirigir al usuario a la pantalla correspondiente según su rol
+            if (userRole === 'cliente') {
+                navigation.navigate('homeClient');
+            } else if (userRole === 'administrador') {
+                navigation.navigate('homeCoach');
+            }
         } catch (error) {
             Toast.show({
                 type: 'error',
@@ -47,7 +59,7 @@ export default function IndexScreen(props) {
         onSubmit: async (formValue, { setSubmitting }) => {
             const email = formValue.email;
             const password = formValue.password;
-            handleLogin(); 
+            handleLogin();
             setSubmitting(false);
         }
     });

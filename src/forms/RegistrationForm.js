@@ -61,7 +61,7 @@ export default function RegistrationForm() {
             gender: yup.string().required("Por favor selecciona un género"),
             weight: yup.string().required("Ingresa tu peso, si no lo sabes puedes poner uno aproximado"),
             height: yup.string().required("Ingresa tu altura, si no la conoces puedes poner una aproximada"),
-            //objective: yup.string().required("Menciona un objetivo, si no tienes alguno puedes escribir NO APLICA")
+            objective: yup.string().required("Menciona un objetivo, si no tienes alguno puedes escribir NO APLICA")
         }),
         validateOnChange: false,
         //registra un usuario
@@ -78,7 +78,7 @@ export default function RegistrationForm() {
                 name: formValue['name'],
                 last_name: formValue['lastName'],
                 middle_name: formValue['middleName'],
-                birthday:formValue['birthDate'],
+                birthday: formValue['birthDate'],
                 current_weight: formValue['weight'],
                 height: formValue['height'],
                 gender: formValue['gender'],
@@ -88,19 +88,20 @@ export default function RegistrationForm() {
             //convertir a JSON
             const jsonData = JSON.stringify(formData);
             //enviar datos al servidor
-            fetch('http://192.168.100.10/auth/nuevoUsuario', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: jsonData
-      })
-      .then(response => response.json())
-      .then(data => console.log(data))
-      .catch(error => console.error(error) );
-      console.log(formData);
-      setSubmitting(false);
+            fetch('http://192.168.100.10:8090/auth/nuevoUsuario', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: jsonData
+            })
+                .then(response => response.json())
+                .then(data => console.log(data))
+                .catch(error => console.error(error));
+            console.log(formData);
+            setSubmitting(false);
         }
+
 
     });
     //ocultar y mostrar contraseña
@@ -148,6 +149,7 @@ export default function RegistrationForm() {
                         buttonStyle={{ backgroundColor: 'transparent' }}
                         titleStyle={{ color: 'gray' }}
                     />
+
                     {show && (
                         <DateTimePicker
                             testID="dateTimePicker"
@@ -194,18 +196,18 @@ export default function RegistrationForm() {
                 />
                 <View style={[styles.contGender, styles.inputs]}>
                     <Picker
-                    selectedValue={genero}
-                    onValueChange={(itemValue) => {
-                        setGenero(itemValue);
-                        formik.setFieldValue('gender', itemValue);
-                    }}>
-                    <Picker.Item label="Selecciona tu género" value="" />
-                    <Picker.Item label="Mujer" value="Mujer" />
-                    <Picker.Item label="Hombre" value="Hombre" />
-                    <Picker.Item label="No específico" value="Otro" />
-                </Picker>
+                        selectedValue={genero}
+                        onValueChange={(itemValue) => {
+                            setGenero(itemValue);
+                            formik.setFieldValue('gender', itemValue);
+                        }}>
+                        <Picker.Item label="Selecciona tu género" value="" />
+                        <Picker.Item label="Mujer" value="Mujer" />
+                        <Picker.Item label="Hombre" value="Hombre" />
+                        <Picker.Item label="No específico" value="Otro" />
+                    </Picker>
                 </View>
-                
+
 
                 <Input
                     placeholder="Correo de UTEZ"
@@ -269,7 +271,7 @@ export default function RegistrationForm() {
                     onPress={formik.handleSubmit}
                     loading={formik.isSubmitting}
                 />
-                    
+
             </View>
         </ScrollView>
     );
@@ -293,24 +295,24 @@ const styles = StyleSheet.create({
         backgroundColor: '#EEEEEE',
 
     },
-   contGender:{
-         marginTop: 20,
-            width: '70%',
-   },
+    contGender: {
+        marginTop: 20,
+        width: '70%',
+    },
     text: {
         fontSize: 18,
         color: 'black',
         marginBottom: 10,
     },
-    btn:{
+    btn: {
         marginTop: 20,
         width: '70%',
         backgroundColor: colors.AZUL_OSUCRO,
     },
-    textBtn:{
+    textBtn: {
         color: 'white',
         //alinear el texto
         textAlign: 'center',
-        
+
     },
 });
