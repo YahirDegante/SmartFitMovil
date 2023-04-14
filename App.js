@@ -12,11 +12,11 @@ const Stack = createNativeStackNavigator();
 export default function App() {
   return (
     <>
-    <NavigationContainer>
-   <AppNavigation/>
- </NavigationContainer>
- <Toast/>
-   </>
+      <NavigationContainer>
+        <AppNavigation />
+      </NavigationContainer>
+      <Toast />
+    </>
   );
 }
 
